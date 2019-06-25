@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   watch: true,
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    another: './src/another-module.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name][chunkhash].js'
@@ -29,5 +32,17 @@ module.exports = {
     new HtmlWebpackPlugin({
         title: 'Output Management'
       })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    },
+      runtimeChunk: 'single'
+    }
 };
